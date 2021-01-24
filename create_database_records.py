@@ -8,22 +8,23 @@ from tortoise import Tortoise
 
 DATE_FORMAT = '%d-%b-%y'
 
-# async def init():
-#      # Here we connect to a DATABASE_URL file.
-#      # also specify the app name of "models"
-#      # which contain models from "app.models"
-#      await Tortoise.init(
-#          db_url=os.environ.get("DATABASE_URL"),
-#          modules={'models': ['app.models']}
-#      )
-#      # Generate the schema
-#      await Tortoise.generate_schemas()
+async def init():
+     # Here we connect to a DATABASE_URL file.
+     # also specify the app name of "models"
+     # which contain models from "app.models"
+     await Tortoise.init(
+         db_url=os.environ.get("DATABASE_URL"),
+         modules={'models': ['app.models']}
+     )
+     # Generate the schema
+     await Tortoise.generate_schemas()
 
-# await init()
+await init()
 
 df = pd.read_csv('netflix_titles.csv')
 records = df.to_records(index=False)
 
+new_items_list = []
 for record in records:
     id_, type_, title, date_added, release_year, rating, duration, description = record
     try:
@@ -37,9 +38,10 @@ for record in records:
             description=description,
             release_year=release_year if release_year else None,
         )
+        new_items_list.append(new_item)
     except (ValueError, IntegrityError):
         continue
 
-    await new_item.save()
+await Content.bulk_create(new_items_list)
 
 await Tortoise.close_connections()

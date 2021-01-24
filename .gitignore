@@ -6,3 +6,4 @@ env
 htmlcov
 .vscode/
 .DS_Store
+example_docker-compose.yml
