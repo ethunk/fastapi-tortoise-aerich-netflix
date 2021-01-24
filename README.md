@@ -23,7 +23,7 @@ aerich upgrade
   - visit: `localhost:8000/` or `127.0.0.1:8000/`
 
 
-Running Test:
+## Running Test
 `pytest`
 ```
 ╰➜ pytest
