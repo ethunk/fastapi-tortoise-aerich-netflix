@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
-ENV DATABASE_URL=postgres://postgres:Mx6IEl6LzJ32kwe2@104.196.29.24:5432/netflix2
+
 # Environment Variables
 
 # Install pip requirements
