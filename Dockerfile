@@ -24,6 +24,6 @@ RUN useradd appuser && chown -R appuser /app
 USER appuser
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-EXPOSE 8000 80
+EXPOSE 8000 80 8080
 
 CMD ["uvicorn", "app.main:app", "--reload"]
