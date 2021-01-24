@@ -62,15 +62,15 @@ async def get_content_by_id(id: str):
 
 # POST/CREATE
 @app.post('/content', response_model=ContentOutPost)
-async def update_show(show: ContentIn):
-    show = await Content.create(**show.dict())
+async def create_content(content: ContentIn):
+    new_content = await Content.create(**content.dict())
 
-    return show
+    return new_content
 
 
 # PATCH/UPDATE
 @app.patch('/content/{id}', response_model=ContentOutGet)
-async def update_show(new_content: ContentIn, id: str):
+async def update_content(new_content: ContentIn, id: str):
     old_content = await Content.get(id=id)
     old_content.update_from_dict(new_content.dict())
 
