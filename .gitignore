@@ -1,0 +1,8 @@
+__pycache__
+.envrc
+venv/
+env
+.coverage
+htmlcov
+.vscode/
+.DS_Store
