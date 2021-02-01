@@ -68,7 +68,7 @@ async def get_content(
 
     if order_by in ContentOutGet.schema()['properties'].keys():
         content.order_by(order_by)
-    else:
+    elif order_by is not None:
         raise_exception(detail=f'{order_by} is not an attribute that can be ordered by.')
 
     return paginate(await ContentOutGet.from_queryset(content), params)
