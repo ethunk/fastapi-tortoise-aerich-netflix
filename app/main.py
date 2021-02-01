@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Any, Optional
 
 from app.db import init_db
 from app.models import (
@@ -15,6 +15,9 @@ log = logging.getLogger(__name__)
 
 def _snake_case(slug: str):
     return slug.replace('-', '_')
+
+def raise_exception(detail='An error occured'):
+    raise HTTPException(status_code=400, detail=detail)
 
 def create_application():
     application = FastAPI()
@@ -42,17 +45,24 @@ async def get_content(
     params: PaginationParams = Depends(),
     type: Optional[str] = Query(None, description="Either ``'Movie'`` or ``'Show'``."),
     rating: Optional[str] = Query(None, description="Valid MPAA or TV Parental Guidelines Monitoring Board rating."),
+    order_by: Optional[str] = Query('', description='Accepts a model attribute. Prefix with `-` for descending.'),
 ):
     content = Content.all()
+
     if type is not None and type.upper() in ContentType._member_names_:
         content = content.filter(type=type.capitalize())
     elif type is not None:
-        raise HTTPException(status_code=400, detail=f'{type} is not a valid option for `type`.')
+        raise_exception(detail=f'{type} is not a valid option for `type`.')
 
     if rating is not None and _snake_case(rating).upper() in Rating._member_names_:
         content = content.filter(rating=rating.upper())
     elif rating is not None:
-        raise HTTPException(status_code=400, detail=f'{rating} is not a valid option for `rating`.')
+        raise_exception(detail=f'{rating} is not a valid option for `rating`.')
+
+    if order_by in ContentOutGet.schema()['properties'].keys():
+        content.order_by(order_by)
+    else:
+        raise_exception(detail=f'{order_by} is not an attribute that can be ordered by.')
 
     return  paginate(await ContentOutGet.from_queryset(content), params)
 
