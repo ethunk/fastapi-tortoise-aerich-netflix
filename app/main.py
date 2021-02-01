@@ -52,7 +52,7 @@ async def get_content(
     params: PaginationParams = Depends(),
     type: Optional[str] = Query(None, description="Either ``'Movie'`` or ``'Show'``."),
     rating: Optional[str] = Query(None, description="Valid MPAA or TV Parental Guidelines Monitoring Board rating."),
-    order_by: Optional[str] = Query('', description='Accepts a model attribute. Prefix with `-` for descending.'),
+    order_by: Optional[str] = Query(None, description='Accepts a model attribute. Prefix with `-` for descending.'),
 ):
     content = Content.all()
 
