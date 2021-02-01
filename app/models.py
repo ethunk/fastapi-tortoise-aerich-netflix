@@ -9,9 +9,11 @@ from enum import Enum
 Tortoise models.
 """
 
+
 class ContentType(str, Enum):
     SHOW = "Show"
     MOVIE = "Movie"
+
 
 class Rating(str, Enum):
     TV_MA = 'TV-MA'
@@ -27,6 +29,7 @@ class Rating(str, Enum):
     TV_Y = 'TV-Y'
     G = 'G'
     PG_13 = 'PG-13'
+
 
 class Content(Model):
     id = fields.IntField(pk=True, required=False)

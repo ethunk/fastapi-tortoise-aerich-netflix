@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Optional
+from typing import Optional
 
 from app.db import init_db
 from app.models import (
@@ -13,17 +13,22 @@ from starlette.responses import RedirectResponse
 
 log = logging.getLogger(__name__)
 
+
 def _snake_case(slug: str):
     return slug.replace('-', '_')
 
+
 def raise_exception(detail='An error occured'):
     raise HTTPException(status_code=400, detail=detail)
+
 
 def create_application():
     application = FastAPI()
     return application
 
+
 app = create_application()
+
 
 @app.on_event('startup')
 async def startup_event():
@@ -35,9 +40,11 @@ async def startup_event():
 async def shutdown_event():
     print('Shutting down...')
 
+
 @app.get('/')
 def redirect_to_docs():
     return RedirectResponse('/docs#')
+
 
 # GET
 @app.get('/content', response_model=Page[ContentOutGet])
@@ -64,11 +71,13 @@ async def get_content(
     else:
         raise_exception(detail=f'{order_by} is not an attribute that can be ordered by.')
 
-    return  paginate(await ContentOutGet.from_queryset(content), params)
+    return paginate(await ContentOutGet.from_queryset(content), params)
+
 
 @app.get('/content/{id}', response_model=ContentOutGet)
 async def get_content_by_id(id: str):
     return await ContentOutGet.from_queryset_single((Content.get(id=id)))
+
 
 # POST/CREATE
 @app.post('/content', response_model=ContentOutPost)
